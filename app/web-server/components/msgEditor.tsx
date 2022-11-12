@@ -15,7 +15,7 @@ import {
   possessiveName,
 } from "../lib/parse-text";
 // style imports
-import styles from "../styles/msgeditor.module.css";
+import styles from "./msgEditor.module.css";
 
 type TemplateToolProps = {
   actor: IActorDetails;

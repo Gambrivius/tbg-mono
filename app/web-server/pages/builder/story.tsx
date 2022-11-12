@@ -26,11 +26,14 @@ import {
 import ZoneSelector from "../../components/zoneSelector";
 import { ObjectList } from "../../components/objectList";
 import MsgEditor from "../../components/msgEditor";
+import InputSpinner from "../../components/inputSpinner";
 // bootstrap imports
 import Button from "react-bootstrap/Button";
 import InputGroup from "react-bootstrap/InputGroup";
 import Form from "react-bootstrap/Form";
 import Dropdown from "react-bootstrap/Dropdown";
+// other imports
+
 // style imports
 import styles from "../../styles/builder.module.css";
 
@@ -49,6 +52,7 @@ function StoryEditor(props: StoryEditorProps) {
     setStoryData(storySwr.data);
     setSelectedOutcome("");
   }, [storySwr.data]);
+
   async function onNewOutcome() {
     if (!props.storyId || !storyData) return;
     const oid: string = new ObjectID().toString();
@@ -165,8 +169,8 @@ function StoryEditor(props: StoryEditorProps) {
       setStoryData(newStoryData);
     }
   }
-  console.log("Rerender");
-  function setOutcomeWeight(w: string) {
+
+  function setOutcomeWeight(w: number) {
     if (!storyData) return;
 
     let found: number = 0;
@@ -182,12 +186,8 @@ function StoryEditor(props: StoryEditorProps) {
 
       let newStoryData: IStoryTextObject = Object.assign({}, storyData);
       let o: IStoryOutcome = storyData.outcomes[found];
-      let weight: string = o.weight.toString();
-      if (/^(\d+)?\.?(\d+)?$/.test(w)) {
-        weight = w;
-        console.log(weight);
-      }
-      o.weight = parseFloat(weight);
+
+      o.weight = w;
       newStoryData.outcomes.splice(found, 1, o);
       setStoryData(newStoryData);
     }
@@ -203,8 +203,7 @@ function StoryEditor(props: StoryEditorProps) {
   if (!storySwr.data || !storyData) return <>Loading..</>;
   // why does this crash?
   //const test = storyCategory.Hit;
-
-  console.log(storyCategory);
+  console.log(thisOutcome?.weight);
 
   return (
     <>
@@ -308,12 +307,14 @@ function StoryEditor(props: StoryEditorProps) {
                 <InputGroup.Text id="basic-addon1" style={{ width: 120 }}>
                   Weight
                 </InputGroup.Text>
-                <Form.Control
-                  type="text"
-                  value={thisOutcome.weight || ""}
-                  onChange={(e) => {
-                    setOutcomeWeight(e.target.value);
-                  }}
+
+                <InputSpinner
+                  max={2}
+                  min={0}
+                  increment={0.05}
+                  decimal_places={2}
+                  value={thisOutcome.weight}
+                  onChange={(num: number) => setOutcomeWeight(num)}
                 />
               </InputGroup>
             </Form>
@@ -400,6 +401,7 @@ export default function Story() {
       setSelectedStory(undefined);
     }
   }
+
   async function updateStories() {
     storiesSwr.mutate(getStoriesInZone(zoneId));
   }
