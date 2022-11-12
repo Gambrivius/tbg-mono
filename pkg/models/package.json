@@ -1,0 +1,9 @@
+{
+  "name": "@mono/models",
+  "version": "0.0.1",
+  "type": "module",
+  "dependencies": {
+    "mongoose": "^6.7.2",
+    "zod": "^3.18.0"
+  }
+}

@@ -1,5 +1,5 @@
 import { Schema, model, models } from "mongoose";
-import { IObject } from "./object";
+import { IObject } from "@mono/models/object";
 
 export enum Direction {
   Error = "Error",

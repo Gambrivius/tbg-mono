@@ -1,5 +1,5 @@
 import Table from "react-bootstrap/Table";
-import { IObject } from "../models/object";
+import { IObject } from "@mono/models/object";
 
 type ObjectListProps = {
   header: string;

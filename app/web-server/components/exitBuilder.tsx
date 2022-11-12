@@ -1,5 +1,4 @@
 import Dropdown from "react-bootstrap/Dropdown";
-import Container from "react-bootstrap/Container";
 import InputGroup from "react-bootstrap/InputGroup";
 import Card from "react-bootstrap/Card";
 import Alert from "react-bootstrap/Alert";
@@ -10,7 +9,7 @@ import ButtonGroup from "react-bootstrap/ButtonGroup";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 import { RoomSelector } from "./roomSelector";
-import { IRoom } from "../models/room";
+import { IRoom } from "@mono/models/room";
 import { useState } from "react";
 interface ExitBuildProps {
   room: IRoom;
@@ -95,7 +94,7 @@ export function ExitBuilder(props: ExitBuildProps) {
       <Dropdown className="mb-3">
         <Dropdown.Toggle variant="success">New Exit</Dropdown.Toggle>
         <Dropdown.Menu>
-          {AvailableDirections()?.map((dir: String) => (
+          {AvailableDirections()?.map((dir: string) => (
             <Dropdown.Item
               key={dir}
               onClick={() => {

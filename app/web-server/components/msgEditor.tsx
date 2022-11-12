@@ -5,7 +5,7 @@ import Row from "react-bootstrap/Row";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import { parseText } from "../lib/parse-text";
-import { IStoryText, IActorDetails } from "../models/story";
+import { IStoryText, IActorDetails } from "@mono/models/story";
 import Table from "react-bootstrap/Table";
 import {
   genderObject,

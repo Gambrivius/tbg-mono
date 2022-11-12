@@ -5,14 +5,14 @@ import { useEffect } from "react";
 import useSWR from "swr";
 import { ObjectID } from "bson";
 // model imports
-import { APIZoneResponse, IZone } from "../../models/zone";
+import { APIZoneResponse, IZone } from "@mono/models/zone";
 import {
   APIStoryResponse,
   IStoryTextObject,
   IStoryOutcome,
   IStoryText,
-} from "../../models/story";
-import { storyCategory, storyCategories } from "../../models/enum";
+} from "@mono/models/story";
+import { storyCategory, storyCategories } from "@mono/models/enum";
 // service imports
 import { getAllZones, getZone } from "../../services/zoneService";
 import {
@@ -187,7 +187,7 @@ function StoryEditor(props: StoryEditorProps) {
         weight = w;
         console.log(weight);
       }
-      o.weight = weight; //parseFloat(weight);
+      o.weight = parseFloat(weight);
       newStoryData.outcomes.splice(found, 1, o);
       setStoryData(newStoryData);
     }

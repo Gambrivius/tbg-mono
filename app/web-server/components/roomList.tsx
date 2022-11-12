@@ -1,6 +1,6 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 
-import { IRoom } from "../models/room";
+import { IRoom } from "@mono/models/room";
 
 import Table from "react-bootstrap/Table";
 

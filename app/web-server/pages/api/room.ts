@@ -1,7 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import connectMongo from "../../lib/mongo";
-import Room from "../../models/room";
-import type IRoom from "../../models/room";
+import Room from "@mono/models/room";
+import type IRoom from "@mono/models/room";
 
 import type { NextApiRequest, NextApiResponse } from "next";
 import { getSession } from "next-auth/react";

@@ -1,11 +1,8 @@
 import Dropdown from "react-bootstrap/Dropdown";
-import Container from "react-bootstrap/Container";
-import Button from "react-bootstrap/Button";
-import ButtonDropdown from "react-bootstrap/ButtonDropdown";
 import InputGroup from "react-bootstrap/InputGroup";
 import Form from "react-bootstrap/Form";
-import { IRoom, IRoomResponse } from "../models/room";
-import { IZone, APIZoneResponse } from "../models/zone";
+import { IRoom, IRoomResponse } from "@mono/models/room";
+import { IZone, APIZoneResponse } from "@mono/models/zone";
 import { getAllZones, getZone } from "../services/zoneService";
 import { getRoomsInZone, getRoom } from "../services/roomService";
 import { useState } from "react";
@@ -15,14 +12,15 @@ interface RoomSelectorProps {
   onSelect: (valid: boolean, roomId: string) => void;
 }
 export function RoomSelector(props: RoomSelectorProps) {
-  const [selectedZone, setSelectedZone] = useState({});
-  const [selectedRoom, setSelectedRoom] = useState({});
+  const [selectedZone, setSelectedZone] = useState<IZone | null>();
+  const [selectedRoom, setSelectedRoom] = useState<IRoom | null>();
 
   const [roomId, setRoomId] = useState("");
   const [valid, setValid] = useState(false);
   const [message, setMessage] = useState("");
+  const zone_id = selectedZone ? selectedZone._id : "";
 
-  const rooms = useSWR<IRoomResponse, Error>(selectedZone._id, getRoomsInZone);
+  const rooms = useSWR<IRoomResponse, Error>(zone_id, getRoomsInZone);
   const zones = useSWR<APIZoneResponse, Error>("/api/zone", getAllZones);
 
   async function selectRoom(room: IRoom) {
@@ -61,14 +59,15 @@ export function RoomSelector(props: RoomSelectorProps) {
     setValid(true);
     props.onSelect(true, id);
   }
-
+  let room_options: IRoom[] = [];
+  if (rooms && rooms.data && rooms.data.rooms) room_options = rooms.data.rooms;
   return (
     <>
       <Form>
         <InputGroup className="mb-3" hasValidation>
           <Dropdown>
             <Dropdown.Toggle>
-              {selectedZone.name || "Select Zone"}
+              {selectedZone ? selectedZone.name : "Select Zone"}
             </Dropdown.Toggle>
 
             <Dropdown.Menu>
@@ -86,11 +85,11 @@ export function RoomSelector(props: RoomSelectorProps) {
           </Dropdown>
           <Dropdown>
             <Dropdown.Toggle>
-              {selectedRoom.name || "Select Room"}
+              {selectedRoom ? selectedRoom.name : "Select Room"}
             </Dropdown.Toggle>
 
             <Dropdown.Menu>
-              {rooms?.data?.rooms.map((room: IRoom) => (
+              {room_options.map((room: IRoom) => (
                 <Dropdown.Item
                   key={room._id}
                   onClick={() => {

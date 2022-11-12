@@ -1,8 +1,8 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import connectMongo from "../../lib/mongo";
-import Zone from "../../models/zone";
-import { IZone, APIZoneResponse } from "../../models/zone";
-import Room from "../../models/room";
+import Zone from "@mono/models/zone";
+import { IZone, APIZoneResponse } from "@mono/models/zone";
+import Room from "@mono/models/room";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { getSession } from "next-auth/react";
 import { z } from "zod";
@@ -20,7 +20,11 @@ export default async (
   res: NextApiResponse<APIZoneResponse>
 ) => {
   const session = await getSession({ req });
-  if (session && session.user.roles && session.user.roles.includes("builder")) {
+  if (!session || !session.user || !session.user.roles) {
+    res.status(400).json({ message: "Not authorized" });
+    return;
+  }
+  if (session.user.roles.includes("builder")) {
     await connectMongo();
     switch (req.method) {
       case "POST":

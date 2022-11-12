@@ -1,4 +1,3 @@
-import type { NextPage } from "next";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -7,9 +6,9 @@ import Button from "react-bootstrap/Button";
 
 import InputGroup from "react-bootstrap/InputGroup";
 import Form from "react-bootstrap/Form";
-import { IRoom, IRoomResponse } from "../../models/room";
+import { IRoom, IRoomResponse } from "@mono/models/room";
 import useSWR from "swr";
-import { IZone, APIZoneResponse } from "../../models/zone";
+import { IZone, APIZoneResponse } from "@mono/models/zone";
 import { getAllZones, getZone } from "../../services/zoneService";
 import {
   getAllRooms,
@@ -40,10 +39,10 @@ function Rooms() {
   //const roomData = useSWR<IRoom | null, Error>(roomId, getRoom(roomId));
   const [newRoomName, setNewRoomName] = useState("");
   const [roomEditData, setRoomEditData] = useState<IRoom | null>();
-  let nameMap = {};
-  if (allRooms && allRooms.data) {
-    allRooms?.data?.rooms?.forEach((room: IRoom) => {
-      nameMap[room._id] = room.name;
+  let nameMap = new Map<string, string>();
+  if (allRooms && allRooms.data && allRooms.data.rooms) {
+    allRooms.data.rooms.forEach((room: IRoom) => {
+      nameMap.set(room._id, room.name);
     });
   }
   async function deleteExit(name: string) {
@@ -62,15 +61,14 @@ function Rooms() {
     destinationId: string,
     symmetrical: boolean
   ) {
-    console.log("CALLED");
-
+    if (!roomEditData) return;
     if (symmetrical == true) {
       // update immediately if symmetrical
       let rdir = ReverseDir(name);
       let dest_room: IRoom | null = await getRoom(destinationId);
       if (dest_room) {
         let e = dest_room.exits || [];
-        e.push({ direction: rdir, destination: roomEditData?._id || "" });
+        e.push({ direction: rdir, destination: roomEditData._id || "" });
         dest_room.exits = e;
 
         let src_room: IRoom | null = await getRoom(roomEditData._id);
@@ -123,6 +121,7 @@ function Rooms() {
       name: newRoomName,
       description: "New room",
       exits: [],
+      _id: "",
     });
     rooms.mutate(getRoomsInZone(zoneId));
   };
@@ -176,6 +175,7 @@ function Rooms() {
                     type="text"
                     value={roomEditData?.name}
                     onChange={(e) => {
+                      if (!roomEditData) return;
                       setRoomEditData({
                         ...roomEditData,
                         name: e.target.value,
@@ -190,9 +190,10 @@ function Rooms() {
                   </InputGroup.Text>
                   <Form.Control
                     as="textarea"
-                    rows="10"
+                    rows={10}
                     value={roomEditData?.description}
                     onChange={(e) => {
+                      if (!roomEditData) return;
                       setRoomEditData({
                         ...roomEditData,
                         description: e.target.value,
@@ -235,7 +236,7 @@ function Rooms() {
                               setRoom(exit.destination);
                             }}
                           >
-                            {nameMap[exit.destination]}
+                            {nameMap.get(exit.destination)}
                           </a>
                         </td>
                         <td>{exit.destination}</td>
@@ -255,12 +256,16 @@ function Rooms() {
                   )}
                 </tbody>
               </Table>
-              <ExitBuilder
-                room={roomEditData}
-                onSubmit={(name, destinationId, symmetrical) => {
-                  addExit(name, destinationId, symmetrical);
-                }}
-              />
+              {roomEditData ? (
+                <ExitBuilder
+                  room={roomEditData}
+                  onSubmit={(name, destinationId, symmetrical) => {
+                    addExit(name, destinationId, symmetrical);
+                  }}
+                />
+              ) : (
+                <></>
+              )}
             </div>
           </div>
         </div>

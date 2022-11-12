@@ -1,4 +1,4 @@
-import { IActorDetails } from "../models/story";
+import { IActorDetails } from "@mono/models/story";
 // TODO: all these genders should be enums
 
 export function possessiveName(name: string) {

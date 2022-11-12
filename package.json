@@ -1,0 +1,23 @@
+{
+  "name": "tbg-mono",
+  "version": "0.0.1",
+  "description": "",
+  "workspaces": [
+    "app/*",
+    "pkg/*"
+  ],
+  "scripts": {
+    "web:dev": "turbo run --filter=@mono/web-server dev"
+  },
+  "devDependencies": {
+    "turbo": "^1.6.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Gambrivius/tbg-mono.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Gambrivius/tbg-mono/issues"
+  },
+  "homepage": "https://github.com/Gambrivius/tbg-mono#readme"
+}

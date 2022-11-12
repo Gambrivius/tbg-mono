@@ -1,5 +1,5 @@
 import axios, { AxiosError } from "axios";
-import { IRoom } from "../models/room";
+import { IRoom } from "@mono/models/room";
 
 export function ReverseDir(direction: string) {
   switch (direction) {
@@ -45,7 +45,7 @@ export async function addRoom(room: IRoom): Promise<boolean> {
   }
 }
 
-export async function getRoom(id: string): Promise<IRoom | null> {
+export async function getRoom(id: string | undefined): Promise<IRoom | null> {
   if (!id) return null;
   try {
     const response = await axios.get("/api/room?id=" + id);

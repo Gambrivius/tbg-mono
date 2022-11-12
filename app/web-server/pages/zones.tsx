@@ -6,7 +6,7 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Container from "react-bootstrap/Container";
 import Alert from "react-bootstrap/Alert";
-import { IZone, APIZoneResponse } from "../models/zone";
+import { IZone, APIZoneResponse } from "@mono/models/zone";
 import { getAllZones, addZone, deleteZone } from "../services/zoneService";
 import useSWR from "swr";
 

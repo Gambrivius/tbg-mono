@@ -1,6 +1,6 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 
-import { IStoryTextObject } from "../models/story";
+import { IStoryTextObject } from "@mono/models/story";
 
 import Table from "react-bootstrap/Table";
 

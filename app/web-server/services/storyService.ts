@@ -1,5 +1,5 @@
 import axios, { AxiosError } from "axios";
-import { APIStoryResponse, IStoryTextObject } from "../models/story";
+import { APIStoryResponse, IStoryTextObject } from "@mono/models/story";
 
 export async function getAllStories(): Promise<APIStoryResponse> {
   return await axios.get("/api/story");

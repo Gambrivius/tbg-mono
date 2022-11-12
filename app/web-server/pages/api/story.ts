@@ -1,8 +1,8 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import connectMongo from "../../lib/mongo";
-import StoryText from "../../models/story";
+import StoryText from "@mono/models/story";
 
-import { zStoryTextSchema, APIStoryResponse } from "../../models/story";
+import { zStoryTextSchema, APIStoryResponse } from "@mono/models/story";
 
 import type { NextApiRequest, NextApiResponse } from "next";
 import { getSession } from "next-auth/react";

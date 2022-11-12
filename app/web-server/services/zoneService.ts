@@ -1,5 +1,5 @@
 import axios, { AxiosError } from "axios";
-import { IZone, APIZoneResponse } from "../models/zone";
+import { IZone, APIZoneResponse } from "@mono/models/zone";
 
 export async function getAllZones(): Promise<APIZoneResponse> {
   const response = await axios.get("/api/zone");

@@ -1,5 +1,5 @@
 import Table from "react-bootstrap/Table";
-import { IZone } from "../models/zone";
+import { IZone } from "@mono/models/zone";
 
 export default function ZoneSelector(zones: IZone[]) {
   return (

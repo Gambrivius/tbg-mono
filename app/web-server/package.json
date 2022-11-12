@@ -1,14 +1,17 @@
 {
-  "name": "tbg-admin",
+  "name": "@mono/web-server",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "typecheck": "tsc",
+    "typecheck:watch": "tsc -w"
   },
   "dependencies": {
+    "@mono/models": "*",
     "@types/bcryptjs": "^2.4.2",
     "@types/mongoose": "^5.11.97",
     "@types/mysql": "^2.15.21",
@@ -22,6 +25,7 @@
     "mysql2": "^2.3.3",
     "next": "12.2.5",
     "next-auth": "^4.10.3",
+    "next-transpile-modules": "^10.0.0",
     "react": "18.2.0",
     "react-bootstrap": "^2.5.0",
     "react-bootstrap-icons": "^1.8.4",

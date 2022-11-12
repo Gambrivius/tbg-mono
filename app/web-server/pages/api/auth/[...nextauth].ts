@@ -1,9 +1,8 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import connectMongo from "../../../lib/mongo";
-import User from "../../../models/user";
-import IUser from "../../../models/user";
-import { hash, compare } from "bcryptjs";
+import User from "@mono/models/user";
+import { compare } from "bcryptjs";
 
 export default NextAuth({
   providers: [
