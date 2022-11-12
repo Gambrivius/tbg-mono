@@ -1,0 +1,11 @@
+.UnitsPane {
+    width: 100%;
+    position: relative; 
+}
+
+.UnitsWrapper {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translate(-50%, 0px);
+}

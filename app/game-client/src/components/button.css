@@ -1,0 +1,59 @@
+.Button0 {
+    background: transparent;
+    border: none; 
+    background-image:url('/static/images/interface/button0.png');
+    background-repeat: no-repeat;
+    width: 123px;
+    height: 31px;
+    padding-top: 0px;
+    margin-top:0px;
+    font-family: 'Knights Font';
+    font-size: 18pt;
+    color:#d5b32f;
+    text-shadow:1px 0 0 rgb(0, 0, 0),0 1px 0 rgb(0, 0, 0),-1px 0 0 rgb(0, 0, 0),0 -1px 0 rgb(0, 0, 0);
+    cursor: inherit;
+}
+.Button0:hover {
+    background-image:url('/static/images/interface/button0_hover.png');
+    color: #f0c836;
+}
+
+.Button1 {
+    background: transparent;
+    border: none; 
+    background-image:url('/static/images/interface/button1.png');
+    background-repeat: no-repeat;
+    width: 106px;
+    height: 28px;
+    padding-top: 0px;
+    margin-top:0px;
+    font-family: 'Knights Font';
+    font-size: 18pt;
+    color:#d5b32f;
+    text-shadow:1px 0 0 rgb(0, 0, 0),0 1px 0 rgb(0, 0, 0),-1px 0 0 rgb(0, 0, 0),0 -1px 0 rgb(0, 0, 0);
+    cursor: inherit;
+}
+.Button1:hover {
+    background-image:url('/static/images/interface/button1_hover.png');
+    color: #f0c836;
+}
+
+.Button2 {
+    background: transparent;
+    border: none; 
+    background-image:url('/static/images/interface/button2.png');
+    background-repeat: no-repeat;
+    width: 131px;
+    height: 35px;
+    padding-top: 0px;
+    margin-top:0px;
+    font-family: 'Knights Font';
+    font-size: 18pt;
+    color:#d5b32f;
+    text-shadow:1px 0 0 rgb(0, 0, 0),0 1px 0 rgb(0, 0, 0),-1px 0 0 rgb(0, 0, 0),0 -1px 0 rgb(0, 0, 0);
+    cursor: inherit;
+}
+.Button2:hover {
+    background-image:url('/static/images/interface/button2_hover.png');
+    color: #f0c836;
+}

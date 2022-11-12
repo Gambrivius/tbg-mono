@@ -1,0 +1,17 @@
+.ActionBarFrame {
+    background-image: url('/static/images/interface/action_bar_frame.png');
+    width: 830px;
+    height: 176px;
+}
+
+.LeftOrb {
+    position: absolute;
+    left: 22px;
+    top: 48px;
+}
+
+.RightOrb {
+    position: absolute;
+    right: 22px;
+    top: 48px;
+}

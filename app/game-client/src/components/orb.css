@@ -1,0 +1,32 @@
+.OrbContainer {
+    width: 82px;
+    height: 82px;
+    position: relative;
+    
+}
+.OrbFull {
+    position: absolute;
+    width: 82px;
+    height: 82px;
+    background-repeat: no-repeat;
+}
+
+.Health {
+    background-image:url('/static/images/interface/health_orb.png');
+}
+
+.Mana {
+    background-image:url('/static/images/interface/mana_orb.png');
+}
+
+
+.OrbEmpty {
+    position: absolute;
+    width: 82px;
+    height: calc(82px * (1 - var(--value)));
+    /*transform: translate(-1px, -1px);*/
+    background-image:url('/static/images/interface/empty_orb.png');
+    background-repeat: no-repeat;
+    transition: height 0.3s;
+}
+

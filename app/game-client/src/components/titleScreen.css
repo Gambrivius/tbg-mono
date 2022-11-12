@@ -1,0 +1,28 @@
+.TitleScreen {
+    background: black;
+    background-image: url('/static/images/backgrounds/title_bg.jpg');
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    height: 100vh;
+    width: 100vw;
+    
+}
+
+.Title {
+    background-image: url('/static/images/title.png');
+    position: absolute;
+    transform: translate(-50%, -50%);
+    top: 25%;
+    left: 50%;
+    width: 392px;
+    height: 74px;
+}
+
+.SystemMenu {
+    position: absolute;
+    text-align: right;
+    bottom: 0%;
+    right: 0%;
+}

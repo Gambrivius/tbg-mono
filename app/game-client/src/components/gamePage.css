@@ -1,0 +1,47 @@
+.GamePage {
+    height: 100vh;
+    color: white;
+
+}
+
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+
+  .column {
+    float: left;
+    margin-top: 10px;
+    
+    padding-left: 5px;
+    padding-right: 5px;
+    
+  }
+  
+  .left, .right {
+    width: calc(25% - 10px);
+    
+  }
+  
+  .middle {
+    width: calc(50% - 10px);
+    text-align: center;
+    
+  }
+
+  .SystemMenu {
+    position: absolute;
+    text-align: right;
+    bottom: 0%;
+    right: 0%;
+}
+
+.HUD {
+  position: absolute;
+  text-align: right;
+  bottom: 0%;
+  right: 50%;
+  transform: translate(50%, 0%);
+}
+

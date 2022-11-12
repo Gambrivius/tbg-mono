@@ -1,0 +1,60 @@
+.UnitFrame {
+    width: 298px;
+    height: 201px;
+    position: relative;
+    background-image:url('/static/images/interface/unit_frame.png');
+    user-select: none
+}
+
+.UnitFrameAggro {
+    width: 298px;
+    height: 201px;
+    position: relative;
+    background-image:url('/static/images/interface/unit_frame_aggro.png');
+}
+
+.UnitLevel {
+    position: absolute;
+    background-image:url('/static/images/interface/unit_frame_blue_button.png');
+    height: 40px;
+    width: 40px;
+    left: 130px;
+    top: 20px;
+    z-index: -1;
+    font-family: 'Knights Font';
+    padding-top: 5px;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 16pt;
+    color:white;
+    text-shadow:1px 0 0 rgb(0, 0, 0),0 1px 0 rgb(0, 0, 0),-1px 0 0 rgb(0, 0, 0),0 -1px 0 rgb(0, 0, 0);   
+}
+
+.UnitName {
+    position: absolute;
+    height: 20px;
+    width: 130px;
+    left: 151px;
+    overflow: hidden;
+    top: 63px;
+    font-family: 'Knights Font';
+    text-align: center;
+    font-size: 14pt;
+    color:white;
+    text-shadow:1px 0 0 rgb(0, 0, 0),0 1px 0 rgb(0, 0, 0),-1px 0 0 rgb(0, 0, 0),0 -1px 0 rgb(0, 0, 0);   
+}
+
+
+.HealthBar {
+    position: absolute;
+    height: 7px;
+    width: 128px;
+    left: 158px;
+    top: 87px;
+    width: calc(128px * var(--health));
+    background-image:url('/static/images/interface/unit_frame_health_bar.png');
+    background-repeat: no-repeat;
+    transition: width 0.3s;
+}
+
+

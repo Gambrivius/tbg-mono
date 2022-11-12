@@ -1,0 +1,10 @@
+title background:
+	creative commons
+	https://www.pexels.com/photo/tree-tunnel-at-daytime-1165982/
+
+ui elements:
+	KodiakGraphics free MMORPG
+	https://www.deviantart.com/kodiakgraphics/art/Free-MMORPG-Gaming-HUD-733219436
+
+not yet used:
+	https://opengameart.org/content/fantasy-ui-elements-by-ravenmore

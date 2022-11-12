@@ -1,0 +1,28 @@
+body a {
+  text-decoration: none;
+  color: #3d63df;
+}
+
+body a:hover {
+  color: #9eb0eb;
+}
+
+.App-header {
+  background-color: #282c34;
+  margin-bottom: 30px;
+  height: 70px;
+  box-shadow: 0px 5px 3px #cccccc;
+}
+
+.magic_glow {
+  animation: glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+  from {
+    text-shadow: 0 0 5px #00eeff;
+  }
+  to {
+    text-shadow: 0 0 15px #f80000, 0 0 10px #ffffff;
+  }
+}

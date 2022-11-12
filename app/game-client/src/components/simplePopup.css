@@ -1,0 +1,23 @@
+.SimplePopup {
+    background-image:url('/static/images/interface/simple_popup.png');
+    background-repeat: no-repeat;
+    width: 278px;
+    height: 121px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;   
+    font-family: 'Knights Font';
+    font-size: 18pt;
+    color: white;
+    text-shadow:1px 0 0 rgb(0, 0, 0),0 1px 0 rgb(0, 0, 0),-1px 0 0 rgb(0, 0, 0),0 -1px 0 rgb(0, 0, 0);
+}
+
+.SimplePopup H1{
+    font-size: 20pt;
+    font-weight: normal;
+    padding: 0px;
+    margin: 0px;
+    color:#d5b32f;
+}

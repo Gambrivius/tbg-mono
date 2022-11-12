@@ -1,0 +1,123 @@
+
+
+.RoomPane {
+
+    min-height: 200px;
+    height: calc(100vh - 50px);
+    user-select: none;
+}
+
+
+.room-desc {
+    margin-top: 0px;
+    margin-bottom: 0px;
+    font-size: 20pt;
+    font-family:  'Knights Font';
+    min-height: 200px;
+}
+
+.room-name {
+    margin-top: 0px;
+    margin-bottom: 0px;
+    font-size: 35pt;
+    color: #bdeeee;
+    font-family: 'Niconne-Regular';
+    text-shadow:2px 0 0 rgb(0, 0, 0),0 2px 0 rgb(0, 0, 0),-2px 0 0 rgb(0, 0, 0),0 -2px 0 rgb(0, 0, 0);
+}
+
+.room-exit-list {
+  display: inline;
+  list-style: none;
+  padding: 0px;
+  font-size: 18pt;
+  font-family: 'Knights Font';
+  
+
+}
+.room-exit-title {
+    
+    display: inline;
+  margin-right: 15px;
+  list-style: none;
+  padding: 0px;
+  font-size: 18pt;
+  font-family: 'Knights Font';
+  color: #99eeee;
+  
+}
+.room-exit-list  li {
+    margin-top: 0px;
+    margin-bottom: 0px;
+
+    display: inline;
+    color: #689ab8;
+}
+.room-exit-list li:hover {
+    margin-top: 0px;
+    margin-bottom: 0px;
+
+    display: inline;
+    color: #ecf3f7;
+}
+
+.room-exit-list li::after {
+    content: ", ";
+}
+
+.room-exit-list  li:last-child::after {
+    content: "";
+    display: block;
+}
+
+
+.room-inhabitants-list {
+    display: inline;
+    list-style: none;
+    padding: 0px;
+    font-size: 18pt;
+    font-family: 'Knights Font';
+    
+  
+  }
+  .room-inhabitants-title {
+      
+    display: inline;
+    margin-right: 15px;
+    list-style: none;
+    padding: 0px;
+    font-size: 18pt;
+    font-family: 'Knights Font';
+    color: #99eeee;
+    
+  }
+  .room-inhabitants-list  li {
+      margin-top: 0px;
+      margin-bottom: 0px;
+  
+      display: inline;
+      color: #689ab8;
+  }
+  .room-inhabitants-list li:hover {
+      margin-top: 0px;
+      margin-bottom: 0px;
+  
+      display: inline;
+      color: #ecf3f7;
+  }
+  
+  .room-inhabitants-list li::after {
+      content: ", ";
+  }
+  
+  .room-inhabitants-list  li:last-child::after {
+      content: "";
+      display: block;
+  }
+
+  .room-inhabitants-empty  {
+    margin-top: 0px;
+    margin-bottom: 0px;
+
+    display: inline;
+    color: #fcfcfc;
+}

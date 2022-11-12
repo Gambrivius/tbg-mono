@@ -1,0 +1,58 @@
+
+.ConsoleContainer {
+    width: calc(100%);
+    height: calc(100vh - 210px);
+    min-height: 200px;
+    min-width: 200px;
+    margin: 0px;
+    padding: 0px;
+    position: relative;
+    box-sizing:border-box;
+    
+}
+.ConsoleBorder {
+    position: absolute;
+    width: calc(100%);
+    height: 100%;
+    border: 33px solid transparent;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    border-image: url('/static/images/interface/border_image_1.png') 33 fill;  
+}
+.ConsolePane {
+    margin: 0px;
+    position: absolute;
+    font-family: 'Knights Font';
+    width: calc(100% - 28px);
+    height: calc(100% - 40px);
+    margin: 20px;
+    border: solid transparent;
+    box-sizing: border-box;
+    
+    overflow-wrap: break-word;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    text-align: left;
+    font-size: 18pt;
+    color:white;
+    text-shadow:1px 0 0 rgb(0, 0, 0),0 1px 0 rgb(0, 0, 0),-1px 0 0 rgb(0, 0, 0),0 -1px 0 rgb(0, 0, 0);
+    
+}
+
+.ConsoleLine {
+    margin-top: 0px;
+    margin-bottom: 0px;
+    color:white;
+    
+    
+}
+.ConsoleLine.Echo {
+    color: rgb(104, 104, 104);
+    
+}
+
+#anchor {
+    overflow-anchor: auto;
+    height: 1px;
+  }

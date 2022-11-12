@@ -1,0 +1,17 @@
+.portrait {
+    position: absolute;
+    height: 125px;
+    width: 125px;
+    left: 19px;
+    top: 27px;
+    z-index: -1;
+    background-repeat: no-repeat;
+}
+
+.portrait-human-male-1 {
+    background-image: url('/static/images/portraits/t_portrait0.png')
+}
+
+.portrait-monster-imp-1 {
+    background-image: url('/static/images/portraits/t_portrait1.png')
+}
