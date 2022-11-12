@@ -1,5 +1,5 @@
 import { Schema, model, models } from "mongoose";
-import { string, z } from "zod";
+import { z } from "zod";
 import { IObject } from "./object";
 import { storyCategory } from "./enum";
 
