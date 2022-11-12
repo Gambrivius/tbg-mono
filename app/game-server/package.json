@@ -1,17 +1,16 @@
 {
-  "name": "socket-mud-server",
+  "name": "@mono/game-server",
   "version": "1.0.0",
   "description": "",
   "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node main.js"
+    "start": "node ./dist/main.js"
   },
+  "author": "",
   "engines": {
     "npm": ">=7.0.0",
     "node": ">=16.0.0"
   },
-  "author": "",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
