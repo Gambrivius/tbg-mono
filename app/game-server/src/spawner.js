@@ -1,10 +1,10 @@
+/* eslint-disable */
 const e = require('express');
 
 class Spawner {
   constructor(time_delay, room, spawn_func) {
     this.spawn_func = spawn_func;
     this.time_delay = time_delay;
-    this.server = server;
     this.room = room;
     this.last_check = null;
     this.time_delay = time_delay;
