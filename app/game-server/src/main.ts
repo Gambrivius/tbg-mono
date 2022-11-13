@@ -12,11 +12,8 @@ let room = require("./room.js");
 let mob = require("./mob.js");
 let spawner = require("./spawner.js");
 let s = require("./server.js");
-//let data = require("./database.js");
 import connectMongo from "./monogodb";
 import User from "@mono/models/user";
-
-console.log("TEST2");
 
 let server = null;
 if (process.env.USE_TLS?.toLowerCase() == "true") {
@@ -141,15 +138,12 @@ app.post("/api/login", async (req: any, res: any) => {
 */
 app.post("/api/login", async (req: any, res: any) => {
   const { username, password } = req.body;
-  console.log(username, password);
   await connectMongo();
   try {
     let user = await User.findOne({
       username: username,
     });
-    console.log(username);
     if (user) {
-      console.log(user);
       const result = await compare(password, user.hash);
       if (result) {
         const token = createAccessToken(user.username);
