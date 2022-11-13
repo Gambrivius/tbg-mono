@@ -12,10 +12,14 @@ let room = require("./room.js");
 let mob = require("./mob.js");
 let spawner = require("./spawner.js");
 let s = require("./server.js");
-let data = require("./database.js");
+//let data = require("./database.js");
+import connectMongo from "./monogodb";
+import User from "@mono/models/user";
+
+console.log("TEST2");
 
 let server = null;
-if (process.env.USE_TLS.toLowerCase() == "true") {
+if (process.env.USE_TLS?.toLowerCase() == "true") {
   console.log("Starting in HTTPS mode");
   server = https.createServer(
     {
@@ -32,12 +36,12 @@ const { Server } = require("socket.io");
 const { exit } = require("process");
 const io = new Server(server);
 let game_server = new s.GameServer();
-let game_data = new data.GameData();
+//let game_data = new data.GameData();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-password_validation = (pass) => {
+const password_validation = (pass: any) => {
   // at least 7 characters
   if (pass.legnth < 7) return false;
   // contains a number
@@ -48,15 +52,16 @@ password_validation = (pass) => {
   return true;
 };
 
-const createAccessToken = (userid) => {
+const createAccessToken = (userid: any) => {
   return jwt.sign({ userid }, process.env.ACCESS_TOKEN_SECRET, {
     expiresIn: "1h",
   });
 };
-app.get("/api/motd", async (req, res) => {
+app.get("/api/motd", async (req: any, res: any) => {
   res.send(game_server.motd);
 });
-app.post("/api/register", async (req, res) => {
+/*
+app.post("/api/register", async (req: any, res: any) => {
   const { username, password } = req.body;
   if (!password_validation(password)) {
     res.send({ error: `weak password` });
@@ -65,41 +70,49 @@ app.post("/api/register", async (req, res) => {
   const hashedPassword = await hash(password, 5);
   try {
     const sql = `SELECT * FROM user_accounts WHERE username='${username}'`;
-    game_data.con.query(sql, (error, rows, fields) => {
+    game_data.con.query(sql, (error: any, rows: any, fields: any) => {
       try {
         if (error) throw error;
         if (rows.length > 0) throw new Error("User already exists.");
         else {
           const sql_insert = `INSERT INTO user_accounts (username, password) VALUES ('${username}', '${hashedPassword}')`;
-          game_data.con.query(sql_insert, (error, results, fields) => {
-            if (error) {
-              res.send({ error: `${error.message}` });
-            } else {
-              res.send("User created successfully");
+          game_data.con.query(
+            sql_insert,
+            (error: any, results: any, fields: any) => {
+              if (error) {
+                res.send({ error: `${error.message}` });
+              } else {
+                res.send("User created successfully");
+              }
             }
-          });
+          );
         }
       } catch (err) {
-        res.send({ error: `${err.message}` });
+        let message = "Unknown Error";
+        if (err instanceof Error) message = err.message;
+        res.send({ error: `${message}` });
       }
     });
   } catch (err) {
-    res.send({ error: `${err.message}` });
+    let message = "Unknown Error";
+    if (err instanceof Error) message = err.message;
+    res.send({ error: `${message}` });
   }
 });
-
-app.post("/api/login", async (req, res) => {
+*/
+/*
+app.post("/api/login", async (req: any, res: any) => {
   const { username, password } = req.body;
   try {
     const sql = `SELECT * FROM user_accounts WHERE username='${username}'`;
-    game_data.con.query(sql, (error, rows, fields) => {
+    game_data.con.query(sql, (error: Error, rows: any, fields: any) => {
       try {
         if (error) throw error;
         if (rows.length <= 0) throw new Error("User does not exist");
         let user = rows[0];
         console.log(user);
 
-        compare(password, user.password, (err, match) => {
+        compare(password, user.password, (err: Error, match: any) => {
           try {
             if (match) {
               const token = createAccessToken(user.username);
@@ -108,15 +121,45 @@ app.post("/api/login", async (req, res) => {
                 .send({ accesstoken: token, username: user.username });
             } else throw new Error("Invalid credentials.");
           } catch (err) {
-            res.status(401).send({ error: `${err.message}` });
+            let message = "Unknown Error";
+            if (err instanceof Error) message = err.message;
+            res.status(401).send({ error: `${message}` });
           }
         });
       } catch (err) {
-        res.status(401).send({ error: `${err.message}` });
+        let message = "Unknown Error";
+        if (err instanceof Error) message = err.message;
+        res.status(401).send({ error: `${message}` });
       }
     });
   } catch (err) {
-    res.send({ error: `${err.message}` });
+    let message = "Unknown Error";
+    if (err instanceof Error) message = err.message;
+    res.send({ error: `${message}` });
+  }
+});
+*/
+app.post("/api/login", async (req: any, res: any) => {
+  const { username, password } = req.body;
+  console.log(username, password);
+  await connectMongo();
+  try {
+    let user = await User.findOne({
+      username: username,
+    });
+    console.log(username);
+    if (user) {
+      console.log(user);
+      const result = await compare(password, user.hash);
+      if (result) {
+        const token = createAccessToken(user.username);
+        res.status(200).send({ accesstoken: token, username: user.username });
+      } else throw new Error("Invalid credentials.");
+    } else throw new Error("Invalid credentials.");
+  } catch (err) {
+    let message = "Unknown Error";
+    if (err instanceof Error) message = err.message;
+    res.send({ error: `${message}` });
   }
 });
 
@@ -193,7 +236,7 @@ new spawner.Spawner(10000, ctry_road, game_server, () => {
   return new mob.Mob("Bandit", 70, 2);
 });
 
-io.use(function (socket, next) {
+io.use(function (socket: any, next: any) {
   let token = socket.handshake.query.token,
     decodedToken;
   console.log(socket);
@@ -211,9 +254,9 @@ io.use(function (socket, next) {
   }
 });
 
-io.on("connection", function (socket) {
+io.on("connection", function (socket: any) {
   const new_connection = new conn.Connection(socket, game_server);
-  new_connection.onLogin = (player) => {
+  new_connection.onLogin = (player: any) => {
     player.move(tavern);
     game_server.register_heartbeat(player);
   };
