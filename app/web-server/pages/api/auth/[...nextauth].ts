@@ -29,6 +29,7 @@ export default NextAuth({
           const result = await compare(credentials.password, user.hash);
           if (result) {
             const session_user = {
+              id: user._id,
               name: user.username,
               email: "",
               username: user.username,

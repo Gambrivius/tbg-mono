@@ -6,7 +6,11 @@
     "rootDir": "./src",
     "strict": true,
     "moduleResolution": "node",
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "baseUrl": "./src",
+
+    "allowJs": true, // TODO: turn this off after all code has been converted to typescript
   },
-  "exclude": ["./node_modules"]
+  "include": ["src/**/*"],
+  "exclude": ["./node_modules",  "dist"]
 }

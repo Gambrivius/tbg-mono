@@ -1,18 +1,20 @@
+/* eslint-disable */
+
 const gState = {
-  CONNECTED: "connected",
-  GET_USERNAME: "get-username",
-  GET_PASSWORD: "get-password",
-  LOGGED_IN: "logged-in",
+  CONNECTED: 'connected',
+  GET_USERNAME: 'get-username',
+  GET_PASSWORD: 'get-password',
+  LOGGED_IN: 'logged-in'
 };
 
 const directions = {
-  NORTH: "North",
-  SOUTH: "South",
-  EAST: "East",
-  WEST: "West",
+  NORTH: 'North',
+  SOUTH: 'South',
+  EAST: 'East',
+  WEST: 'West'
 };
 
-function reverse_direction(direction) {
+function reverseDirection(direction) {
   switch (direction) {
     case directions.NORTH:
       return directions.SOUTH;
@@ -33,7 +35,7 @@ class Room {
   }
   add_exit = (direction, room) => {
     const to_dir = direction;
-    const from_dir = reverse_direction(direction);
+    const from_dir = reverseDirection(direction);
     this.exits.push({ direction: to_dir, destination: room });
     room.exits.push({ direction: from_dir, destination: this });
   };
@@ -47,8 +49,8 @@ class Room {
         }),
         inhabitants: this.inhabitants.map((inhabitant) => {
           return inhabitant.name;
-        }),
-      },
+        })
+      }
     };
     return data;
   };
@@ -101,4 +103,4 @@ class Room {
   };
 }
 
-module.exports = { Room, directions, reverse_direction };
+module.exports = { Room, directions, reverseDirection };

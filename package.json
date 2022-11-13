@@ -7,7 +7,8 @@
     "pkg/*"
   ],
   "scripts": {
-    "web:dev": "turbo run --filter=@mono/web-server dev"
+    "web:dev": "turbo run --filter=@mono/web-server dev",
+    "lint": "turbo run lint"
   },
   "devDependencies": {
     "turbo": "^1.6.3"

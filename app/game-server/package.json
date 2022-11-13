@@ -1,28 +1,40 @@
 {
-  "name": "socket-mud-server",
+  "name": "@mono/game-server",
   "version": "1.0.0",
-  "description": "",
-  "main": "main.js",
+  "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node main.js"
+    "dev": "nodemon",
+    "build": "tsc",
+    "lint": "eslint src/**"
   },
+  "author": "",
   "engines": {
     "npm": ">=7.0.0",
     "node": ">=16.0.0"
   },
-  "author": "",
   "license": "ISC",
   "dependencies": {
+    "@mono/models": "*",
+    "@types/bcryptjs": "^2.4.2",
     "bcryptjs": "^2.4.3",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
+    "express-async-handler": "^1.2.0",
     "jsonwebtoken": "^8.5.1",
     "mysql": "^2.18.1",
     "socket.io": "^4.5.1",
     "system-sleep": "^1.3.7"
   },
   "devDependencies": {
-    "typescript": "^4.7.4"
+    "@types/jsonwebtoken": "^8.5.9",
+    "@types/node": "^18.11.9",
+    "@typescript-eslint/eslint-plugin": "^5.42.1",
+    "eslint": "^8.27.0",
+    "eslint-config-standard-with-typescript": "^23.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-n": "^15.5.1",
+    "eslint-plugin-promise": "^6.1.1",
+    "nodemon": "^2.0.20",
+    "typescript": "^4.8.4"
   }
 }

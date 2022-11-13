@@ -1,4 +1,4 @@
-import { Schema, model, connect } from "mongoose";
+import { connect } from "mongoose";
 
 async function connectMongo() {
   if (!process.env.MONGO_CSTRING) return;
