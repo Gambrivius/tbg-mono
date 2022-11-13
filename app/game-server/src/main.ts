@@ -1,64 +1,73 @@
-import connectMongo from './monogodb';
-import User from '@mono/models/user';
+import Server from 'socket.io'
+// import exit from 'process';
 
-require("dotenv").config();
-const express = require("express");
-const app = express();
-const http = require("http");
-const https = require("https");
-var fs = require("fs");
-const jwt = require("jsonwebtoken");
-const { hash, compare } = require("bcryptjs");
+import connectMongo from './monogodb'
+import User from '@mono/models/user'
+import * as dotenv from 'dotenv'
+import Express from 'express'
+import asyncHandler from 'express-async-handler'
+import http from 'http'
+import https from 'https'
+import * as fs from 'fs'
+import jwt from 'jsonwebtoken'
+import bcrypt from 'bcryptjs'
 
-let conn = require("./connection.js");
-let room = require("./room.js");
-let mob = require("./mob.js");
-let spawner = require("./spawner.js");
-let s = require("./server.js");
+import * as room from 'room'
+import * as conn from 'connection'
+import * as mob from 'mob'
+import * as spawner from 'spawner'
+import * as s from 'server'
 
+declare module 'jsonwebtoken' {
+  export interface JwtPayload {
+    userId: string
+  }
+}
 
-let server = null;
-if (process.env.USE_TLS?.toLowerCase() == "true") {
-  console.log("Starting in HTTPS mode");
+dotenv.config()
+const app = Express()
+let server = null
+if (process.env.USE_TLS?.toLowerCase() === 'true') {
+  console.log('Starting in HTTPS mode')
   server = https.createServer(
     {
-      cert: fs.readFileSync(process.env.CRT_FILE_PATH),
-      key: fs.readFileSync(process.env.KEY_FILE_PATH),
+      cert: fs.readFileSync(process.env.CRT_FILE_PATH ?? ''),
+      key: fs.readFileSync(process.env.KEY_FILE_PATH ?? '')
     },
     app
-  );
+  )
 } else {
   console.log('Starting in HTTP mode')
   server = http.createServer(app)
 }
-const { Server } = require('socket.io')
-const { exit } = require('process')
-const io = new Server(server);
-let game_server = new s.GameServer();
-//let game_data = new data.GameData();
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+const io = new Server.Server(server)
+const gameServer = new s.GameServer()
 
-const password_validation = (pass: any) => {
+app.use(Express.json())
+app.use(Express.urlencoded({ extended: true }))
+
+/*
+const passwordValidation = (pass: string): boolean => {
   // at least 7 characters
-  if (pass.legnth < 7) return false;
+  if (pass.length < 7) return false
   // contains a number
-  if (!/\d/.test(pass)) return false;
+  if (!/\d/.test(pass)) return false
   // contains a letter
-  if (!/[A-Z]/.test(pass)) return false;
-  if (!/[a-z]/.test(pass)) return false;
-  return true;
-};
+  if (!/[A-Z]/.test(pass)) return false
+  if (!/[a-z]/.test(pass)) return false
+  return true
+}
+*/
 
-const createAccessToken = (userid: any) => {
-  return jwt.sign({ userid }, process.env.ACCESS_TOKEN_SECRET, {
-    expiresIn: "1h",
-  });
-};
-app.get("/api/motd", async (req: any, res: any) => {
-  res.send(game_server.motd);
-});
+const createAccessToken = (userid: string): string => {
+  return jwt.sign({ userid }, process.env.ACCESS_TOKEN_SECRET ?? '', {
+    expiresIn: '1h'
+  })
+}
+app.get('/api/motd', (req: Express.Request, res: Express.Response) => {
+  res.send(gameServer.motd)
+})
 /*
 app.post("/api/register", async (req: any, res: any) => {
   const { username, password } = req.body;
@@ -102,128 +111,134 @@ app.post("/api/register", async (req: any, res: any) => {
 /*
 
 */
-app.post("/api/login", async (req: any, res: any) => {
-  const { username, password } = req.body;
-  await connectMongo();
-  try {
-    let user = await User.findOne({
-      username: username,
-    });
-    if (user) {
-      const result = await compare(password, user.hash);
-      if (result) {
-        const token = createAccessToken(user.username);
-        res.status(200).send({ accesstoken: token, username: user.username });
-      } else throw new Error("Invalid credentials.");
-    } else throw new Error("Invalid credentials.");
-  } catch (err) {
-    let message = "Unknown Error";
-    if (err instanceof Error) message = err.message;
-    res.send({ error: `${message}` });
-  }
-});
+app.post(
+  '/api/login',
+  asyncHandler(async (req: Express.Request, res: Express.Response) => {
+    const { username, password } = req.body
+    await connectMongo()
+    try {
+      const user = await User.findOne({
+        username
+      })
+      if (user !== undefined) {
+        const result = await bcrypt.compare(password, user.hash)
+        if (result) {
+          const token = createAccessToken(user.username)
+          res.status(200).send({ accesstoken: token, username: user.username })
+        } else throw new Error('Invalid credentials.')
+      } else throw new Error('Invalid credentials.')
+    } catch (err) {
+      let message = 'Unknown Error'
+      if (err instanceof Error) message = err.message
+      res.send({ error: `${message}` })
+    }
+  })
+)
 
 // Build room structure
-let tavern = new room.Room(
-  "Goblin Breath Tavern",
+const tavern = new room.Room(
+  'Goblin Breath Tavern',
   "The tavern wreaks of spoiled ale and sweaty ogres.  A goblin behind the bar eyes you up and down, perhaps to offer you a drink, or perhaps to chew your face off.  You're not sure.  There is a door leading outside to the West."
-);
-let ss_road = new room.Room(
-  "South Shire Road",
+)
+const ssRoad = new room.Room(
+  'South Shire Road',
   'You are on a cobblestone road that leads North and South.  Oak barrels are stacked outside the building to the East; a dilapidated timber building with a sign that reads, "Goblin Breath Tavern". '
-);
-let square = new room.Room(
-  "Town Square",
-  "Village folk bustle about the busy town square.  Horse-drawn carriages precariously cross the intersection as pedestrians shout obscenities.  You notice a statue in the center of the intersection."
-);
-let ns_road = new room.Room(
-  "North Shire Road",
-  "A few blocks are missing from the cobblestone road here and there but the sight is impressive none-the-less.  The road continues North and South."
-);
-let n_gate = new room.Room(
-  "North Gate",
+)
+const square = new room.Room(
+  'Town Square',
+  'Village folk bustle about the busy town square.  Horse-drawn carriages precariously cross the intersection as pedestrians shout obscenities.  You notice a statue in the center of the intersection.'
+)
+const nsRoad = new room.Room(
+  'North Shire Road',
+  'A few blocks are missing from the cobblestone road here and there but the sight is impressive none-the-less.  The road continues North and South.'
+)
+const nGate = new room.Room(
+  'North Gate',
   "You are at the town's Northern gate.  Unfortunately for you, nothing has been implemented past this point."
-);
-let s_gate = new room.Room(
-  "South Gate",
+)
+const sGate = new room.Room(
+  'South Gate',
   "You are at the town's Southern gate.  The country road stretches out before you."
-);
-let e_gate = new room.Room(
-  "East Gate",
+)
+const eGate = new room.Room(
+  'East Gate',
   "You are at the town's Eastern gate.  Unfortunately for you, nothing has been implemented past this point."
-);
-let w_gate = new room.Room(
-  "West Gate",
+)
+const wGate = new room.Room(
+  'West Gate',
   "You are at the town's Western gate.  Unfortunately for you, nothing has been implemented past this point."
-);
-let ev_road = new room.Room(
-  "East Village Road",
-  "The sun shines brightly in your eyes as you gaze at the church steeples to the North.  The sound of a busy town square rumbles from the West."
-);
-let wv_road = new room.Room(
-  "West Village Road",
+)
+const evRoad = new room.Room(
+  'East Village Road',
+  'The sun shines brightly in your eyes as you gaze at the church steeples to the North.  The sound of a busy town square rumbles from the West.'
+)
+const wvRoad = new room.Room(
+  'West Village Road',
   "A large pothole is filled with water from this morning's shower.  You can't help but to notice your reflection in it; you need to shave.  The road continues East and West."
-);
-let church = new room.Room(
-  "Shire Church",
-  "theres a preying mantis or something.  idk i dont go to church."
-);
-let ctry_road = new room.Room(
-  "South Country Road",
+)
+const church = new room.Room(
+  'Shire Church',
+  'theres a preying mantis or something.  idk i dont go to church.'
+)
+const ctryRoad = new room.Room(
+  'South Country Road',
   "The dirt road looks well-travelled.  A sign pointing North says, 'Welcome to Shire Village'."
-);
+)
 // connnect rooms
-tavern.add_exit(room.directions.WEST, ss_road);
-square.add_exit(room.directions.SOUTH, ss_road);
-square.add_exit(room.directions.NORTH, ns_road);
-square.add_exit(room.directions.EAST, ev_road);
-square.add_exit(room.directions.WEST, wv_road);
-ss_road.add_exit(room.directions.SOUTH, s_gate);
-ns_road.add_exit(room.directions.NORTH, n_gate);
-ev_road.add_exit(room.directions.EAST, e_gate);
-wv_road.add_exit(room.directions.WEST, w_gate);
-ev_road.add_exit(room.directions.NORTH, church);
-s_gate.add_exit(room.directions.SOUTH, ctry_road);
+tavern.add_exit(room.directions.WEST, ssRoad)
+square.add_exit(room.directions.SOUTH, ssRoad)
+square.add_exit(room.directions.NORTH, nsRoad)
+square.add_exit(room.directions.EAST, evRoad)
+square.add_exit(room.directions.WEST, wvRoad)
+ssRoad.add_exit(room.directions.SOUTH, sGate)
+nsRoad.add_exit(room.directions.NORTH, nGate)
+evRoad.add_exit(room.directions.EAST, eGate)
+wvRoad.add_exit(room.directions.WEST, wGate)
+evRoad.add_exit(room.directions.NORTH, church)
+sGate.add_exit(room.directions.SOUTH, ctryRoad)
 
 // add mobs
-new spawner.Spawner(10000, tavern, game_server, () => {
-  return new mob.Mob("Goblin Bartender", 30, 1);
-});
-new spawner.Spawner(10000, tavern, game_server, () => {
-  return new mob.Mob("Patron", 30, 1);
-});
-new spawner.Spawner(10000, ctry_road, game_server, () => {
-  return new mob.Mob("Bandit", 70, 2);
-});
+const s1 = new spawner.Spawner(10000, tavern, () => {
+  return new mob.Mob('Goblin Bartender', 30, 1)
+})
+const s2 = new spawner.Spawner(10000, tavern, () => {
+  return new mob.Mob('Patron', 30, 1)
+})
+const s3 = new spawner.Spawner(10000, ctryRoad, () => {
+  return new mob.Mob('Bandit', 70, 2)
+})
+gameServer.register_heartbeat(s1)
+gameServer.register_heartbeat(s2)
+gameServer.register_heartbeat(s3)
 
 io.use(function (socket: any, next: any) {
-  let token = socket.handshake.query.token,
-    decodedToken;
-  console.log(socket);
+  const token = socket.handshake.query.token
   try {
-    decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
-    console.log("token valid for user", decodedToken.userid);
-    socket.connectedUser = decodedToken.userid;
-    console.log(decodedToken);
-    socket.access_token = token;
-    next();
-  } catch (err) {
-    console.log(err);
-    next(new Error("not valid token"));
-    socket.disconnect();
-  }
-});
+    const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET ?? '')
+    const decodedToken = decoded as jwt.JwtPayload
 
-io.on("connection", function (socket: any) {
-  const new_connection = new conn.Connection(socket, game_server);
-  new_connection.onLogin = (player: any) => {
-    player.move(tavern);
-    game_server.register_heartbeat(player);
-  };
-  new_connection.login();
-  game_server.connections.push(new_connection);
-});
+    console.log('token valid for user', decodedToken.userid)
+    socket.connectedUser = decodedToken.userid
+    console.log(decodedToken)
+    socket.access_token = token
+    next()
+  } catch (err) {
+    console.log(err)
+    next(new Error('not valid token'))
+    socket.disconnect()
+  }
+})
+
+io.on('connection', function (socket: any) {
+  const newConnection = new conn.Connection(socket, gameServer)
+  newConnection.onLogin = (player: any) => {
+    player.move(tavern)
+    gameServer.register_heartbeat(player)
+  }
+  newConnection.login()
+  gameServer.connections.push(newConnection)
+})
 
 server.listen(process.env.SERVER_PORT, () => {
-  console.log(`listening on *:${process.env.SERVER_PORT}`);
-});
+  console.log(`listening on *:${process.env.SERVER_PORT ?? ''}`)
+})
