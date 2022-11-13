@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "nodemon",
-    "build": "tsc"
+    "build": "tsc",
+    "lint": "eslint src/**"
   },
   "author": "",
   "engines": {

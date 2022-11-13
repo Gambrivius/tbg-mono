@@ -1,3 +1,6 @@
+import connectMongo from './monogodb';
+import User from '@mono/models/user';
+
 require("dotenv").config();
 const express = require("express");
 const app = express();
@@ -12,8 +15,7 @@ let room = require("./room.js");
 let mob = require("./mob.js");
 let spawner = require("./spawner.js");
 let s = require("./server.js");
-import connectMongo from "./monogodb";
-import User from "@mono/models/user";
+
 
 let server = null;
 if (process.env.USE_TLS?.toLowerCase() == "true") {
@@ -26,11 +28,11 @@ if (process.env.USE_TLS?.toLowerCase() == "true") {
     app
   );
 } else {
-  console.log("Starting in HTTP mode");
-  server = http.createServer(app);
+  console.log('Starting in HTTP mode')
+  server = http.createServer(app)
 }
-const { Server } = require("socket.io");
-const { exit } = require("process");
+const { Server } = require('socket.io')
+const { exit } = require('process')
 const io = new Server(server);
 let game_server = new s.GameServer();
 //let game_data = new data.GameData();
@@ -98,43 +100,7 @@ app.post("/api/register", async (req: any, res: any) => {
 });
 */
 /*
-app.post("/api/login", async (req: any, res: any) => {
-  const { username, password } = req.body;
-  try {
-    const sql = `SELECT * FROM user_accounts WHERE username='${username}'`;
-    game_data.con.query(sql, (error: Error, rows: any, fields: any) => {
-      try {
-        if (error) throw error;
-        if (rows.length <= 0) throw new Error("User does not exist");
-        let user = rows[0];
-        console.log(user);
 
-        compare(password, user.password, (err: Error, match: any) => {
-          try {
-            if (match) {
-              const token = createAccessToken(user.username);
-              res
-                .status(200)
-                .send({ accesstoken: token, username: user.username });
-            } else throw new Error("Invalid credentials.");
-          } catch (err) {
-            let message = "Unknown Error";
-            if (err instanceof Error) message = err.message;
-            res.status(401).send({ error: `${message}` });
-          }
-        });
-      } catch (err) {
-        let message = "Unknown Error";
-        if (err instanceof Error) message = err.message;
-        res.status(401).send({ error: `${message}` });
-      }
-    });
-  } catch (err) {
-    let message = "Unknown Error";
-    if (err instanceof Error) message = err.message;
-    res.send({ error: `${message}` });
-  }
-});
 */
 app.post("/api/login", async (req: any, res: any) => {
   const { username, password } = req.body;

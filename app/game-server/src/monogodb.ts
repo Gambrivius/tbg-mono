@@ -1,6 +1,6 @@
-import { connect } from "mongoose";
+import { connect } from 'mongoose';
 
-async function connectMongo() {
+async function connectMongo (): Promise<void> {
   if (!process.env.MONGO_CSTRING) return;
   await connect(process.env.MONGO_CSTRING);
 }
