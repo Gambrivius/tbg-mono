@@ -1,4 +1,4 @@
-import { StoryText } from "./story-text";
+import { StoryText } from './story-text';
 
 enum CombatStat {
   None,
@@ -14,12 +14,12 @@ enum CombatStat {
   HitRating,
   CritRating,
   MagicRating,
-  SpellBlock,
+  SpellBlock
 }
 
 enum DamageType {
   Physical,
-  Magic,
+  Magic
 }
 
 enum CombatResult {
@@ -29,12 +29,12 @@ enum CombatResult {
   Armor,
   Hit,
   Crit,
-  SpellBlock,
+  SpellBlock
 }
 
 class StatModifier {
   stat: CombatStat = CombatStat.None;
-  value: number = 0;
+  value = 0;
 }
 
 type AttackType = {
@@ -49,21 +49,21 @@ type AttackType = {
 function get_combat_result_text(r: CombatResult): string {
   switch (r) {
     case CombatResult.Armor:
-      return "armor";
+      return 'armor';
     case CombatResult.Block:
-      return "block";
+      return 'block';
     case CombatResult.Dodge:
-      return "dodge";
+      return 'dodge';
     case CombatResult.Crit:
-      return "crit";
+      return 'crit';
     case CombatResult.Hit:
-      return "hit";
+      return 'hit';
     case CombatResult.Parry:
-      return "parry";
+      return 'parry';
     case CombatResult.SpellBlock:
-      return "spellblock";
+      return 'spellblock';
     default:
-      return "unknown";
+      return 'unknown';
   }
 }
 function get_effective_stat(
@@ -87,17 +87,21 @@ interface IStats {
   modifiers: StatModifier[];
 
   get strength(): number;
-  get dexterity(): number;
-  get constitution(): number;
-  get intelligence(): number;
-  get wisdom(): number;
-  get armor(): number;
-
   set strength(value: number);
+
+  get dexterity(): number;
   set dexterity(value: number);
+
+  get constitution(): number;
   set constitution(value: number);
+
+  get intelligence(): number;
   set intelligence(value: number);
+
+  get wisdom(): number;
   set wisdom(value: number);
+
+  get armor(): number;
   set armor(value: number);
 
   get dodge_rating(): number;
@@ -154,19 +158,19 @@ class FighterStats implements IStats {
     return get_effective_stat(this._armor, CombatStat.Armor, this.modifiers);
   }
   get dodge_rating() {
-    let base: number = this.dexterity * 0.5;
+    const base = this.dexterity * 0.5;
     return get_effective_stat(base, CombatStat.DodgeRating, this.modifiers);
   }
   get parry_rating() {
-    let base: number = this.dexterity * 0.6 + this.strength * 0.4;
+    const base = this.dexterity * 0.6 + this.strength * 0.4;
     return get_effective_stat(base, CombatStat.ParryRating, this.modifiers);
   }
   get hit_rating() {
-    let base: number = this.dexterity;
+    const base = this.dexterity;
     return get_effective_stat(base, CombatStat.HitRating, this.modifiers);
   }
   get crit_rating() {
-    let base: number = this.dexterity * 0.1;
+    const base = this.dexterity * 0.1;
     return get_effective_stat(base, CombatStat.CritRating, this.modifiers);
   }
   get block_rating() {
@@ -188,13 +192,13 @@ type CombatTableOutcome = {
 
 class CombatTable {
   combat_outcomes: CombatTableOutcome[] = [];
-  weight_total: number = 0;
+  weight_total = 0;
   add_outcome(outcome: CombatResult, weight: number): void {
     this.weight_total += weight;
     this.combat_outcomes.push({
       result: outcome,
       weight: weight,
-      upper_bound: this.weight_total,
+      upper_bound: this.weight_total
     });
   }
   constructor(attack_type: AttackType, attacker: IStats, defender: IStats) {
@@ -217,7 +221,7 @@ class CombatTable {
     }
   }
   get_random_outcome(): CombatResult {
-    let roll: number = Math.random();
+    const roll = Math.random();
 
     for (let i = 0; i < this.combat_outcomes.length; i++) {
       if (roll <= this.combat_outcomes[i].upper_bound)
@@ -241,18 +245,18 @@ function get_combat_result(
   return combat_table.get_random_outcome();
 }
 
-let mob1: FighterStats = new FighterStats();
-let mob2: FighterStats = new FighterStats();
-let attack: AttackType = {
+const mob1 = new FighterStats();
+const mob2 = new FighterStats();
+const attack: AttackType = {
   damage_type: DamageType.Physical,
   can_block: true,
   can_dodge: true,
   can_parry: true,
   can_spell_block: true,
-  armor_piercing: false,
+  armor_piercing: false
 };
 
-let result: CombatResult = get_combat_result(attack, mob1, mob2);
+const result = get_combat_result(attack, mob1, mob2);
 console.log(get_combat_result_text(result));
 console.log(result);
 
@@ -273,88 +277,87 @@ const generic_ctc: CombatTextClass = {
       weight: 1,
       result: CombatResult.Hit,
       story_text: {
-        actor_message: "You land a strike to %s% with your %a-obj%.",
-        subject_message: "%a% lands a strike to you with %a-his% %a-obj%.",
-        room_message: "%a% lands a strike to %s% with %a-his% %a-obj%.",
-      },
+        actor_message: 'You land a strike to %s% with your %a-obj%.',
+        subject_message: '%a% lands a strike to you with %a-his% %a-obj%.',
+        room_message: '%a% lands a strike to %s% with %a-his% %a-obj%.'
+      }
     },
     {
       weight: 1,
       result: CombatResult.Hit,
       story_text: {
-        actor_message: "You strike %s% with your %a-obj%.",
-        subject_message: "%a% strikes you with %a-his% %a-obj%.",
-        room_message: "%a% strikes %s% with %a-his% %a-obj%.",
-      },
+        actor_message: 'You strike %s% with your %a-obj%.',
+        subject_message: '%a% strikes you with %a-his% %a-obj%.',
+        room_message: '%a% strikes %s% with %a-his% %a-obj%.'
+      }
     },
     {
       weight: 1,
       result: CombatResult.Dodge,
       story_text: {
-        actor_message: "%s% steps aside, dodging your %a-obj%.",
-        subject_message: "You step aside, dodging %as% %a-obj%.",
-        room_message: "%s% steps aside, dodging %as% %a-obj%.",
-      },
+        actor_message: '%s% steps aside, dodging your %a-obj%.',
+        subject_message: 'You step aside, dodging %as% %a-obj%.',
+        room_message: '%s% steps aside, dodging %as% %a-obj%.'
+      }
     },
     {
       weight: 1,
       result: CombatResult.Parry,
       story_text: {
-        actor_message: "%s% nimbly parries your %a-obj%.",
-        subject_message: "You nimbly parry %as% %a-obj%.",
-        room_message: "%s% nimbly parries %as% %a-obj%.",
-      },
+        actor_message: '%s% nimbly parries your %a-obj%.',
+        subject_message: 'You nimbly parry %as% %a-obj%.',
+        room_message: '%s% nimbly parries %as% %a-obj%.'
+      }
     },
     {
       weight: 1,
       result: CombatResult.Block,
       story_text: {
         actor_message:
-          "You strike at %s%, who blocks you with %s-his% %s-obj%.",
-        subject_message: "%a% strikes at you, but you block with your %s-obj%.",
-        room_message: "%a% strikes at %s%, but is blocked by %ss% %s-obj%.",
-      },
+          'You strike at %s%, who blocks you with %s-his% %s-obj%.',
+        subject_message: '%a% strikes at you, but you block with your %s-obj%.',
+        room_message: '%a% strikes at %s%, but is blocked by %ss% %s-obj%.'
+      }
     },
     {
       weight: 1,
       result: CombatResult.Armor,
       story_text: {
-        actor_message: "You land a strike to %s% with your %a-obj%.",
-        subject_message: "%a% lands a strike to you with %a-his% %a-obj%.",
-        room_message: "%a% lands a strike to %s% with %a-his% %a-obj%.",
-      },
+        actor_message: 'You land a strike to %s% with your %a-obj%.',
+        subject_message: '%a% lands a strike to you with %a-his% %a-obj%.',
+        room_message: '%a% lands a strike to %s% with %a-his% %a-obj%.'
+      }
     },
     {
       weight: 1,
       result: CombatResult.Crit,
       story_text: {
-        actor_message: "You land a menacing strike on %s% with your %a-obj%.",
+        actor_message: 'You land a menacing strike on %s% with your %a-obj%.',
         subject_message:
-          "%a% lands a menacing strike on you with %a-his% %a-obj%.",
-        room_message:
-          "%a% lands a menacing strike on %s% with %a-his% %a-obj%.",
-      },
+          '%a% lands a menacing strike on you with %a-his% %a-obj%.',
+        room_message: '%a% lands a menacing strike on %s% with %a-his% %a-obj%.'
+      }
     },
     {
       weight: 1,
       result: CombatResult.Crit,
       story_text: {
         actor_message:
-          "%s% reels in pain as your %a-obj% lands soundly into %s-his% body.",
+          '%s% reels in pain as your %a-obj% lands soundly into %s-his% body.',
         subject_message:
-          "You reel in pain as %as% %a-obj% lands soundly into you body.",
+          'You reel in pain as %as% %a-obj% lands soundly into you body.',
         room_message:
-          "%s% reels in pain as %as% %a-obj% lands soundly into %s-his% body.",
-      },
+          '%s% reels in pain as %as% %a-obj% lands soundly into %s-his% body.'
+      }
     },
     {
       weight: 1,
       result: CombatResult.SpellBlock,
       story_text: {
-        actor_message: "%s% spellblocks your attack.",
-        subject_message: "You spellblock %as% attack.",
-        room_message: "%s% spellblocks %as% attack.",
-      },
-    },
-  ],
+        actor_message: '%s% spellblocks your attack.',
+        subject_message: 'You spellblock %as% attack.',
+        room_message: '%s% spellblocks %as% attack.'
+      }
+    }
+  ]
 };

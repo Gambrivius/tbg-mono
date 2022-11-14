@@ -203,7 +203,6 @@ io.use(function (socket: any, next: any) {
   const token = socket.handshake.query.token;
   console.log(socket.handshake.query);
   try {
-    console.log('token: ' + token);
     const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET ?? '');
     const decodedToken = decoded as jwt.JwtPayload;
 
