@@ -11,8 +11,8 @@ import https from 'https';
 import * as fs from 'fs';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
+import { Room, Direction, reverseDirection } from './types/room';
 
-import { Room, directions } from './room';
 import * as conn from './connection';
 import * as mob from './mob';
 import * as spawner from './spawner';
@@ -125,65 +125,89 @@ app.post(
 
 // Build room structure
 const tavern = new Room(
+  '1',
   'Goblin Breath Tavern',
-  "The tavern wreaks of spoiled ale and sweaty ogres.  A goblin behind the bar eyes you up and down, perhaps to offer you a drink, or perhaps to chew your face off.  You're not sure.  There is a door leading outside to the West."
+  "The tavern wreaks of spoiled ale and sweaty ogres.  A goblin behind the bar eyes you up and down, perhaps to offer you a drink, or perhaps to chew your face off.  You're not sure.  There is a door leading outside to the West.",
+  {}
 );
 const ssRoad = new Room(
+  '2',
   'South Shire Road',
-  'You are on a cobblestone road that leads North and South.  Oak barrels are stacked outside the building to the East; a dilapidated timber building with a sign that reads, "Goblin Breath Tavern". '
+  'You are on a cobblestone road that leads North and South.  Oak barrels are stacked outside the building to the East; a dilapidated timber building with a sign that reads, "Goblin Breath Tavern". ',
+  {}
 );
 const square = new Room(
+  '3',
   'Town Square',
-  'Village folk bustle about the busy town square.  Horse-drawn carriages precariously cross the intersection as pedestrians shout obscenities.  You notice a statue in the center of the intersection.'
+  'Village folk bustle about the busy town square.  Horse-drawn carriages precariously cross the intersection as pedestrians shout obscenities.  You notice a statue in the center of the intersection.',
+  {}
 );
 const nsRoad = new Room(
+  '4',
   'North Shire Road',
-  'A few blocks are missing from the cobblestone road here and there but the sight is impressive none-the-less.  The road continues North and South.'
+  'A few blocks are missing from the cobblestone road here and there but the sight is impressive none-the-less.  The road continues North and South.',
+  {}
 );
 const nGate = new Room(
+  '5',
   'North Gate',
-  "You are at the town's Northern gate.  Unfortunately for you, nothing has been implemented past this point."
+  "You are at the town's Northern gate.  Unfortunately for you, nothing has been implemented past this point.",
+  {}
 );
 const sGate = new Room(
+  '6',
   'South Gate',
-  "You are at the town's Southern gate.  The country road stretches out before you."
+  "You are at the town's Southern gate.  The country road stretches out before you.",
+  {}
 );
 const eGate = new Room(
+  '7',
   'East Gate',
-  "You are at the town's Eastern gate.  Unfortunately for you, nothing has been implemented past this point."
+  "You are at the town's Eastern gate.  Unfortunately for you, nothing has been implemented past this point.",
+  {}
 );
 const wGate = new Room(
+  '8',
   'West Gate',
-  "You are at the town's Western gate.  Unfortunately for you, nothing has been implemented past this point."
+  "You are at the town's Western gate.  Unfortunately for you, nothing has been implemented past this point.",
+  {}
 );
 const evRoad = new Room(
+  '9',
   'East Village Road',
-  'The sun shines brightly in your eyes as you gaze at the church steeples to the North.  The sound of a busy town square rumbles from the West.'
+  'The sun shines brightly in your eyes as you gaze at the church steeples to the North.  The sound of a busy town square rumbles from the West.',
+  {}
 );
 const wvRoad = new Room(
+  '10',
   'West Village Road',
-  "A large pothole is filled with water from this morning's shower.  You can't help but to notice your reflection in it; you need to shave.  The road continues East and West."
+  "A large pothole is filled with water from this morning's shower.  You can't help but to notice your reflection in it; you need to shave.  The road continues East and West.",
+  {}
 );
 const church = new Room(
+  '11',
   'Shire Church',
-  'theres a preying mantis or something.  idk i dont go to church.'
+  'theres a preying mantis or something.  idk i dont go to church.',
+  {}
 );
 const ctryRoad = new Room(
+  '12',
   'South Country Road',
-  "The dirt road looks well-travelled.  A sign pointing North says, 'Welcome to Shire Village'."
+  "The dirt road looks well-travelled.  A sign pointing North says, 'Welcome to Shire Village'.",
+  {}
 );
-// connnect rooms
-tavern.add_exit(directions.WEST, ssRoad);
-square.add_exit(directions.SOUTH, ssRoad);
-square.add_exit(directions.NORTH, nsRoad);
-square.add_exit(directions.EAST, evRoad);
-square.add_exit(directions.WEST, wvRoad);
-ssRoad.add_exit(directions.SOUTH, sGate);
-nsRoad.add_exit(directions.NORTH, nGate);
-evRoad.add_exit(directions.EAST, eGate);
-wvRoad.add_exit(directions.WEST, wGate);
-evRoad.add_exit(directions.NORTH, church);
-sGate.add_exit(directions.SOUTH, ctryRoad);
+// connnect rooDirection
+tavern.addExit(Direction.West, ssRoad);
+square.addExit(Direction.South, ssRoad);
+square.addExit(Direction.North, nsRoad);
+square.addExit(Direction.East, evRoad);
+square.addExit(Direction.West, wvRoad);
+ssRoad.addExit(Direction.South, sGate);
+nsRoad.addExit(Direction.North, nGate);
+evRoad.addExit(Direction.East, eGate);
+wvRoad.addExit(Direction.West, wGate);
+evRoad.addExit(Direction.North, church);
+sGate.addExit(Direction.South, ctryRoad);
 
 // add mobs
 const s1 = new spawner.Spawner(10000, tavern, () => {
