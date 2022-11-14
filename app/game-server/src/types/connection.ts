@@ -1,25 +1,25 @@
-import { SocketChannel, ConnectionState } from '@mono/models/connection';
+import { ESocketChannel, EConnectionState } from '@mono/models/connection';
 import Server from 'socket.io';
 import { GameServer } from './gameServer';
 
 class Connection {
-  connState: ConnectionState;
+  connState: EConnectionState;
   socket: Server.Socket;
   name: string;
   server: GameServer;
 
   constructor(socket: Server.Socket, server: GameServer) {
-    this.connState = ConnectionState.Connected;
+    this.connState = EConnectionState.Connected;
     this.socket = socket;
     this.server = server;
     this.name = 'new user';
-    this.socket.on(SocketChannel.ServerSend, this.onReceiveData);
+    this.socket.on(ESocketChannel.ServerSend, this.onReceiveData);
     this.socket.on(
-      SocketChannel.RequestConnectionState,
+      ESocketChannel.RequestConnectionState,
       this.onRequestConnectionState
     );
-    this.socket.on(SocketChannel.RequestGameState, this.onRequestGameState);
-    this.socket.on(SocketChannel.Disconnect, this.onDisconnect);
+    this.socket.on(ESocketChannel.RequestGameState, this.onRequestGameState);
+    this.socket.on(ESocketChannel.Disconnect, this.onDisconnect);
     //this.player = null;
     this.onLogin = null;
     this.send_conn_state();
@@ -29,11 +29,11 @@ class Connection {
     this.echo(`Welcome aboard matey!`);
     //this.player = new player.Player(this, this.name);
     if (this.onLogin != null) this.onLogin(this.player);
-    this.conn_state = ConnectionState.LoggedIn;
+    this.connState = EConnectionState.LoggedIn;
     this.send_conn_state();
   };
   send_conn_state = () => {
-    this.socket.emit('update-connection-state', this.conn_state);
+    this.socket.emit(ESocketChannel.UpdateConnectionState, this.connState);
   };
   send_game_state = () => {
     console.log('sending game state');
@@ -52,13 +52,16 @@ class Connection {
     }
   };
   send = (data) => {
-    this.socket.emit(SocketChannel.UpdateGameState, data);
+    this.socket.emit(ESocketChannel.UpdateGameState, data);
   };
-  echo = (message: string, channel: SocketChannel = SocketChannel.Console) => {
-    if (channel == SocketChannel.Console) this.send({ console: message });
+  echo = (
+    message: string,
+    channel: ESocketChannel = ESocketChannel.Console
+  ) => {
+    if (channel == ESocketChannel.Console) this.send({ console: message });
   };
   onReceiveData = (data) => {
-    if (this.connState == ConnectionState.LoggedIn) {
+    if (this.connState == EConnectionState.LoggedIn) {
       this.handle_input(data);
     }
   };

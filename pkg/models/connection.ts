@@ -1,4 +1,4 @@
-export enum SocketChannel {
+export enum ESocketChannel {
   ServerSend = "server-send",
   RequestConnectionState = "request-connection-state",
   RequestGameState = "request-game-state",
@@ -8,7 +8,7 @@ export enum SocketChannel {
   Console = "console",
 }
 
-export enum ConnectionState {
+export enum EConnectionState {
   Connected = "connected",
   LoggedIn = "logged-in",
 }
