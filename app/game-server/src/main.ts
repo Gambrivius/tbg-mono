@@ -11,9 +11,8 @@ import https from 'https';
 import * as fs from 'fs';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
-import { Room, Direction, reverseDirection } from './types/room';
-
-import * as conn from './connection';
+import { Room, Direction } from './types/room';
+import { Connection } from './types/connection';
 import * as mob from './mob';
 import * as spawner from './spawner';
 import * as s from './server';
@@ -231,9 +230,7 @@ io.use(function (socket: any, next: any) {
     const decodedToken = decoded as jwt.JwtPayload;
 
     console.log('token valid for user', decodedToken.userid);
-    socket.connectedUser = decodedToken.userid;
     console.log(decodedToken);
-    socket.access_token = token;
     next();
   } catch (err) {
     console.log(err);
@@ -242,8 +239,8 @@ io.use(function (socket: any, next: any) {
   }
 });
 
-io.on('connection', function (socket: any) {
-  const newConnection = new conn.Connection(socket, gameServer);
+io.on('connection', function (socket: Server.Socket) {
+  const newConnection = new Connection(socket, gameServer);
   newConnection.onLogin = (player: any) => {
     player.move(tavern);
     gameServer.register_heartbeat(player);

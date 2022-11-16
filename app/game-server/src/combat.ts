@@ -77,7 +77,7 @@ function get_effective_stat(
   });
   return r;
 }
-interface IStats {
+export interface IStats {
   _strength: number;
   _dexterity: number;
   _constitution: number;
@@ -113,7 +113,7 @@ interface IStats {
   get spell_block(): number;
 }
 
-class FighterStats implements IStats {
+export class DefaultStats implements IStats {
   hp = 15;
   max_hp = 15;
   _strength = 15;
@@ -245,8 +245,8 @@ function get_combat_result(
   return combat_table.get_random_outcome();
 }
 
-const mob1 = new FighterStats();
-const mob2 = new FighterStats();
+const mob1 = new DefaultStats();
+const mob2 = new DefaultStats();
 const attack: AttackType = {
   damage_type: DamageType.Physical,
   can_block: true,

@@ -2,11 +2,12 @@ import { ESocketChannel, EConnectionState } from '@mono/models/connection';
 import Server from 'socket.io';
 import { GameServer } from './gameServer';
 
-class Connection {
+export class Connection {
   connState: EConnectionState;
   socket: Server.Socket;
   name: string;
   server: GameServer;
+  onLogin?: (name: string) => void;
 
   constructor(socket: Server.Socket, server: GameServer) {
     this.connState = EConnectionState.Connected;
@@ -21,11 +22,10 @@ class Connection {
     this.socket.on(ESocketChannel.RequestGameState, this.onRequestGameState);
     this.socket.on(ESocketChannel.Disconnect, this.onDisconnect);
     //this.player = null;
-    this.onLogin = null;
+    this.onLogin = undefined;
     this.send_conn_state();
   }
   login = () => {
-    this.name = this.socket.connectedUser;
     this.echo(`Welcome aboard matey!`);
     //this.player = new player.Player(this, this.name);
     if (this.onLogin != null) this.onLogin(this.player);
